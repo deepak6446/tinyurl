@@ -101,7 +101,7 @@ const getUrlMongo = async (shortUrl) => {
         return [shortUrlNotFound.status, shortUrlNotFound.response, data];
     }
     await redisStore(data.shortUrl, data.longUrl);
-    return [OK.status, {url: data.shortUrl}, {url: data.shortUrl}];
+    return [OK.status, {url: data.longUrl}, {url: data.longUrl}];
 }
 
 module.exports= {
