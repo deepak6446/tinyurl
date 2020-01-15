@@ -1,0 +1,35 @@
+{
+  "urlRequired": {
+    "status": 406,
+    "response": {
+      "error": "url required"
+    }
+  },
+  "shortUrlRequired": {
+    "status": 406,
+    "response": {
+      "error": "url required"
+    }
+  },
+  "shortUrlNotFound":{
+    "status": 200,
+    "response": {
+      "error": "url not found"
+    }
+  },
+  "mongoError": {
+    "status": 500,
+    "response": {
+      "error": "unexpected exceptions are occured while processing request"
+    }
+  },
+  "internalErr": {
+    "status": 500,
+    "response": {
+      "error": "unexpected exceptions are occured while processing request"
+    }
+  },
+  "OK": {
+    "status": 200
+  }
+}

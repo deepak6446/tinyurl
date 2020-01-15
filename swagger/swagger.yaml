@@ -1,0 +1,228 @@
+swagger: '2.0'
+info:
+  version: '1.0'
+  title: head
+  description: 'Heady API to create and update categories and product'
+  contact: {}
+host: localhost:3000
+basePath: /
+schemes:
+- http
+consumes:
+- application/json
+produces:
+- application/json
+paths:
+  /ping:
+    get:
+      description: 'Returns ok if Api server is running'
+      summary: check if server is running
+      tags:
+      - Misc
+      operationId: OK
+      deprecated: false
+      produces:
+      - application/json
+      parameters: []
+      responses:
+        200:
+          description: 'If server is running and mongodb connected'
+          headers: {}
+        500:
+          description: 'If mongodb is not connected'
+  /category/add:
+    post:
+      description: 'Add a category by providing category_name and parent_category'
+      summary: Add a category
+      tags:
+      - Misc
+      operationId: addcategories
+      deprecated: false
+      produces:
+      - application/json
+      parameters:
+      - name: Content-Type
+        in: header
+        required: true
+        type: string
+        description: ''
+      - name: Body
+        in: body
+        required: true
+        description: ''
+        schema:
+          $ref: '#/definitions/addcategoriesrequest'
+      responses:
+        200:
+          description: ''
+          headers: {}
+  /product/add:
+    post:
+      description: 'Add Product mapped to a category or categories.'
+      summary: Add Product
+      tags:
+      - Misc
+      operationId: addproduct
+      deprecated: false
+      produces:
+      - application/json
+      parameters:
+      - name: Content-Type
+        in: header
+        required: true
+        type: string
+        description: ''
+      - name: Body
+        in: body
+        required: true
+        description: ''
+        schema:
+          $ref: '#/definitions/addproductrequest'
+      responses:
+        200:
+          description: ''
+          headers: {}
+  /product/get:
+    get:
+      description: 'Get all products by a category.'
+      summary: Get all products
+      tags:
+      - Misc
+      operationId: getproduct
+      deprecated: false
+      produces:
+      - application/json
+      parameters:
+      - name: Content-Type
+        in: header
+        required: true
+        type: string
+        description: ''
+      - name: Body
+        in: body
+        required: true
+        description: ''
+        schema:
+          $ref: '#/definitions/getproductrequest'
+      responses:
+        200:
+          description: ''
+          headers: {}
+  /product/update:
+    put:
+      description: 'Update product details (name,price,etc)'
+      summary: update product
+      tags:
+      - Misc
+      operationId: updateproduct
+      deprecated: false
+      produces:
+      - application/json
+      parameters:
+      - name: Content-Type
+        in: header
+        required: true
+        type: string
+        description: ''
+      - name: Body
+        in: body
+        required: true
+        description: ''
+        schema:
+          $ref: '#/definitions/updateproductrequest'
+      responses:
+        200:
+          description: ''
+          headers: {}
+  /category/get:
+    get:
+      description: 'Get all categories with all its child categories mapped to it.'
+      summary: Get all categories
+      tags:
+      - Misc
+      operationId: getcategories
+      deprecated: false
+      produces:
+      - application/json
+      parameters:
+      - name: Content-Type
+        in: header
+        required: true
+        type: string
+        description: ''
+      responses:
+        200:
+          description: ''
+          headers: {}
+definitions:
+  addcategoriesrequest:
+    title: addcategoriesrequest
+    example:
+      category_name: /mobiles
+      parent_category: /
+    type: object
+    properties:
+      category_name:
+        type: string
+      parent_category:
+        type: string
+    required:
+    - category_name
+    - parent_category
+  addproductrequest:
+    title: addproductrequest
+    example:
+      categories:
+      - /samsung
+      product_name: samsung-galaxy-a
+      price: 4356.5
+    type: object
+    properties:
+      categories:
+        type: array
+        items:
+          type: string
+      product_name:
+        type: string
+      price:
+        type: number
+        format: double
+    required:
+    - categories
+    - product_name
+    - price
+  getproductrequest:
+    title: getproductrequest
+    example:
+      categories:
+      - /samsung
+    type: object
+    properties:
+      categories:
+        type: array
+        items:
+          type: string
+    required:
+    - categories
+  updateproductrequest:
+    title: updateproductrequest
+    example:
+      product_update_name: new name
+      product_name: samsung-galaxy-a
+      price: 78889
+    type: object
+    properties:
+      product_update_name:
+        type: string
+      product_name:
+        type: string
+      price:
+        type: integer
+        format: int32
+    required:
+    - product_update_name
+    - product_name
+    - price
+tags:
+- name: Misc
+  description: ''
