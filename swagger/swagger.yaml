@@ -1,8 +1,8 @@
 swagger: '2.0'
 info:
   version: '1.0'
-  title: head
-  description: 'Heady API to create and update categories and product'
+  title: Tiny Url
+  description: 'Generating tiny url for long url'
   contact: {}
 host: localhost:3000
 basePath: /
@@ -26,17 +26,17 @@ paths:
       parameters: []
       responses:
         200:
-          description: 'If server is running and mongodb connected'
+          description: 'Server is running and mongodb connected'
           headers: {}
         500:
-          description: 'If mongodb is not connected'
-  /category/add:
+          description: 'Mongodb is not connected'
+  /url/create:
     post:
-      description: 'Add a category by providing category_name and parent_category'
-      summary: Add a category
+      description: 'Add a long url in database and returns the short url'
+      summary: Add a short url
       tags:
       - Misc
-      operationId: addcategories
+      operationId: addshorturls
       deprecated: false
       produces:
       - application/json
@@ -51,178 +51,58 @@ paths:
         required: true
         description: ''
         schema:
-          $ref: '#/definitions/addcategoriesrequest'
+          $ref: '#/definitions/addshorturl'
       responses:
         200:
-          description: ''
-          headers: {}
-  /product/add:
-    post:
-      description: 'Add Product mapped to a category or categories.'
-      summary: Add Product
-      tags:
-      - Misc
-      operationId: addproduct
-      deprecated: false
-      produces:
-      - application/json
-      parameters:
-      - name: Content-Type
-        in: header
-        required: true
-        type: string
-        description: ''
-      - name: Body
-        in: body
-        required: true
-        description: ''
-        schema:
-          $ref: '#/definitions/addproductrequest'
-      responses:
-        200:
-          description: ''
-          headers: {}
-  /product/get:
+          description: 'short url added successfully'
+        500: 
+          description: 'Internal Error like mongodb or any internal error'
+  /urlCount/:fromDate/:toDate:
     get:
-      description: 'Get all products by a category.'
-      summary: Get all products
+      description: 'get number of short urls creatd fromDate to todate rnge'
+      summary: Get short url counts 
       tags:
       - Misc
-      operationId: getproduct
+      operationId: countshorturl
       deprecated: false
       produces:
       - application/json
-      parameters:
-      - name: Content-Type
-        in: header
-        required: true
-        type: string
-        description: ''
-      - name: Body
-        in: body
-        required: true
-        description: ''
-        schema:
-          $ref: '#/definitions/getproductrequest'
       responses:
         200:
-          description: ''
-          headers: {}
-  /product/update:
-    put:
-      description: 'Update product details (name,price,etc)'
-      summary: update product
-      tags:
-      - Misc
-      operationId: updateproduct
-      deprecated: false
-      produces:
-      - application/json
-      parameters:
-      - name: Content-Type
-        in: header
-        required: true
-        type: string
-        description: ''
-      - name: Body
-        in: body
-        required: true
-        description: ''
-        schema:
-          $ref: '#/definitions/updateproductrequest'
-      responses:
-        200:
-          description: ''
-          headers: {}
-  /category/get:
+          description: 'count returned successfully'
+        406: 
+          description: 'fromdate and todate is required'
+        500: 
+          description: 'Internal Error like mongodb or any internal error'
+  /:shortUrl:
     get:
-      description: 'Get all categories with all its child categories mapped to it.'
-      summary: Get all categories
+      description: 'get long url for provided short url'
+      summary: Get long url
       tags:
       - Misc
-      operationId: getcategories
+      operationId: getlongurl
       deprecated: false
       produces:
       - application/json
-      parameters:
-      - name: Content-Type
-        in: header
-        required: true
-        type: string
-        description: ''
       responses:
         200:
-          description: ''
+          description: 'return long url if found'
           headers: {}
+        406: 
+          description: 'short url is not provided'
+        500: 
+          description: 'Internal Error like mongodb or any internal error'
 definitions:
-  addcategoriesrequest:
-    title: addcategoriesrequest
+  addshorturl:
+    title: addShortUrlRequest
     example:
-      category_name: /mobiles
-      parent_category: /
+      url: https://editor.swagger.io/
     type: object
     properties:
-      category_name:
-        type: string
-      parent_category:
+      url:
         type: string
     required:
-    - category_name
-    - parent_category
-  addproductrequest:
-    title: addproductrequest
-    example:
-      categories:
-      - /samsung
-      product_name: samsung-galaxy-a
-      price: 4356.5
-    type: object
-    properties:
-      categories:
-        type: array
-        items:
-          type: string
-      product_name:
-        type: string
-      price:
-        type: number
-        format: double
-    required:
-    - categories
-    - product_name
-    - price
-  getproductrequest:
-    title: getproductrequest
-    example:
-      categories:
-      - /samsung
-    type: object
-    properties:
-      categories:
-        type: array
-        items:
-          type: string
-    required:
-    - categories
-  updateproductrequest:
-    title: updateproductrequest
-    example:
-      product_update_name: new name
-      product_name: samsung-galaxy-a
-      price: 78889
-    type: object
-    properties:
-      product_update_name:
-        type: string
-      product_name:
-        type: string
-      price:
-        type: integer
-        format: int32
-    required:
-    - product_update_name
-    - product_name
-    - price
+    - url
 tags:
 - name: Misc
   description: ''

@@ -1,3 +1,6 @@
+/**
+ * connect to mongodb and return mongoose connection
+ */
 const Mongoose = require("mongoose");
 Mongoose.Promise = global.Promise;
 

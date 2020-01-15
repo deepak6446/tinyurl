@@ -1,5 +1,4 @@
 /**
- * contains all code related to add, update categories
  * follow swagger file for api definations
  */
 
@@ -9,6 +8,7 @@ const {
   internalErr,
   shortUrlRequired
 } = require("../message");
+
 const {
   storeInMongoDB,
   getUrlMongo,
@@ -18,8 +18,12 @@ const {
 /**
  * @param {*} req: request object
  * @param {*} res: responce object
- *
- * store url in db and return short url
+ * @requied req.body.url
+ * 
+ * create hash of url, let first 7 char as shortUrl
+ * check in db if short url is already present
+ * if yes consider next 7 char as short url and continue 
+ * if no store url in db and return short url
  */
 const createUrl = async (req, res) => {
   
@@ -29,23 +33,16 @@ const createUrl = async (req, res) => {
     return res.status(urlRequired.status).send(urlRequired.response);
   }
 
-  let index = 0
-  let [shortUrl, mongoErr] = ['', false]
   let hash = encoderUrl(url)
-  console.log("------>>>>> out", shortUrl, "mongoErr:", mongoErr)
 
   // To handle dublicate part of hash key
-  for(let index=0; (24-index-global.shortUrlLength)>=0; index++){
-    let hashtrim = hash.slice(index, index+global.shortUrlLength)
-    console.log('____>', hashtrim, "hash: ", hash, global.shortUrlLength)
+  let shortUrlLength = parseInt(process.env.shortUrlLength)
+  for(let index=0; (24-index-shortUrlLength)>=0; index++){
+    let hashtrim = hash.slice(index, index+shortUrlLength)
     let x = await storeInMongoDB(hashtrim, url)
-    //  = 
-    console.log("------>>>>> in", x[0].length, "mongoErr:", x[1], typeof x[1])
     if(x[0].length){
-      console.log("break------")
       return res.status(OK.status).send({shortUrl: x[0]})
     }else if(x[1]) {
-      console.log("break------")
       return res.status(mongoError.status).send(mongoError.response)
 
     }
@@ -60,7 +57,7 @@ const createUrl = async (req, res) => {
  * get url from DB
  */
 const getUrl = async (req, res) => {
-  let shortUrl = req.path.slice(1)
+  let shortUrl = req.params.shortUrl
   console.info("getting long url for", shortUrl)
 
   if (!shortUrl || !shortUrl.trim().length) {

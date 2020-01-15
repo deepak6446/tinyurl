@@ -6,6 +6,7 @@ const express = require("express");
 const router = express.Router();
 
 const { getUrl, createUrl } = require("../controllers/getset");
+const { getUrlMongo } = require("../controllers/helpers")
 const { urlCount } = require("../controllers/admin")
 
 router.get("*", function(req, res, next) {
@@ -17,15 +18,16 @@ router.get("*", function(req, res, next) {
  * send ok if all prerequisite are satisfied
  */
 router.get("/ping", async (req, res) => {
-  if (findCategory()[0] != null) {
+  if (getUrlMongo("shortUrl")[0] == 500) {
     res.sendStatus(500);
   } else {
     res.sendStatus(200);
   }
 });
 
+// routes
 router.post("/url/create", createUrl);
 router.get("/urlCount/:fromDate/:toDate", urlCount)
-router.get("/*", getUrl);
+router.get("/:shortUrl", getUrl);
 
 module.exports = router;

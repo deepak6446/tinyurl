@@ -11,7 +11,6 @@ module.exports = {
           return resolve([null, data]);
         })
         .catch(err => {
-          // console.error(`error in mongo query: ${args}`, err);
           return resolve([err, null]);
         });
     });

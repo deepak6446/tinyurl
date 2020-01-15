@@ -1,3 +1,6 @@
+/***
+ * connect to redis and return redis client
+ */
 const redis = require("redis");
 const bluebird = require('bluebird')
 bluebird.promisifyAll(redis.RedisClient.prototype);

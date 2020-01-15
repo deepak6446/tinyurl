@@ -11,6 +11,12 @@
       "error": "url required"
     }
   },
+  "datesRequired": {
+    "status": 406,
+    "response": {
+      "error": "fromDate and toDate is reqired required"
+    }
+  }, 
   "shortUrlNotFound":{
     "status": 200,
     "response": {
