@@ -11,6 +11,12 @@ Docker enables developers to easily pack, ship, and run any application as a lig
 2. docker-compose up
 3. Done!
 
+# Docker build and push 
+docker login
+docker build -t deepak6446/tinyurl:latest .
+docker push deepak6446/tinyurl:latest .
+
+# kubernets deployment is available at [Medium](https://medium.com/@deepak.r.poojari/deployment-with-kubernetes-k8-on-gcp-1aa8ea5a81bf) 
 # API's
 
 1.  create a tiny url
